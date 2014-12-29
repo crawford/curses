@@ -12,8 +12,8 @@ import (
 type Grid [][]int
 
 const (
-	MAX_AGE=20
-	AGE_THRESHOLD=10
+	MAX_AGE       = 20
+	AGE_THRESHOLD = 10
 )
 
 func (g Grid) Draw() {
@@ -22,8 +22,8 @@ func (g Grid) Draw() {
 		for y, age := range col {
 			if age < MAX_AGE {
 				color := termbox.Attribute(MAX_AGE - age)
-				termbox.SetCell(x * 2, y, ' ', termbox.ColorDefault, color)
-				termbox.SetCell(x * 2 + 1, y, ' ', termbox.ColorDefault, color)
+				termbox.SetCell(x*2, y, ' ', termbox.ColorDefault, color)
+				termbox.SetCell(x*2+1, y, ' ', termbox.ColorDefault, color)
 			}
 		}
 	}
@@ -56,7 +56,7 @@ func NewGrid(width, height int) *Grid {
 	for x := 0; x < width/2; x++ {
 		col := []int{}
 		for y := 0; y < height; y++ {
-			col = append(col, MAX_AGE + 1)
+			col = append(col, MAX_AGE+1)
 		}
 		grid = append(grid, col)
 	}
@@ -113,29 +113,29 @@ func square(grid *Grid) {
 				continue
 			}
 
-			if x > 0 && (*grid)[x - 1][y] > MAX_AGE {
-				(*grid)[x - 1][y] = 0
+			if x > 0 && (*grid)[x-1][y] > MAX_AGE {
+				(*grid)[x-1][y] = 0
 			}
-			if x > 0 && y > 0 && (*grid)[x - 1][y - 1] > MAX_AGE {
-				(*grid)[x - 1][y - 1] = 0
+			if x > 0 && y > 0 && (*grid)[x-1][y-1] > MAX_AGE {
+				(*grid)[x-1][y-1] = 0
 			}
-			if y > 0 && (*grid)[x][y - 1] > MAX_AGE {
-				(*grid)[x][y - 1] = 0
+			if y > 0 && (*grid)[x][y-1] > MAX_AGE {
+				(*grid)[x][y-1] = 0
 			}
-			if x < grid.Width() - 1 && y > 0 && (*grid)[x + 1][y - 1] > MAX_AGE {
-				(*grid)[x + 1][y - 1] = 0
+			if x < grid.Width()-1 && y > 0 && (*grid)[x+1][y-1] > MAX_AGE {
+				(*grid)[x+1][y-1] = 0
 			}
-			if x < grid.Width() - 1 && (*grid)[x + 1][y] > MAX_AGE {
-				(*grid)[x + 1][y] = 0
+			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE {
+				(*grid)[x+1][y] = 0
 			}
-			if x < grid.Width() - 1 && y < grid.Height() - 1 && (*grid)[x + 1][y + 1] > MAX_AGE {
-				(*grid)[x + 1][y + 1] = 0
+			if x < grid.Width()-1 && y < grid.Height()-1 && (*grid)[x+1][y+1] > MAX_AGE {
+				(*grid)[x+1][y+1] = 0
 			}
-			if y < grid.Height() - 1 && (*grid)[x][y + 1] > MAX_AGE {
-				(*grid)[x][y + 1] = 0
+			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE {
+				(*grid)[x][y+1] = 0
 			}
-			if x > 0 && y < grid.Height() - 1 && (*grid)[x - 1][y + 1] > MAX_AGE {
-				(*grid)[x - 1][y + 1] = 0
+			if x > 0 && y < grid.Height()-1 && (*grid)[x-1][y+1] > MAX_AGE {
+				(*grid)[x-1][y+1] = 0
 			}
 		}
 	}
@@ -148,17 +148,17 @@ func diamond(grid *Grid) {
 				continue
 			}
 
-			if x > 0 && (*grid)[x - 1][y] > MAX_AGE {
-				(*grid)[x - 1][y] = 0
+			if x > 0 && (*grid)[x-1][y] > MAX_AGE {
+				(*grid)[x-1][y] = 0
 			}
-			if y > 0 && (*grid)[x][y - 1] > MAX_AGE {
-				(*grid)[x][y - 1] = 0
+			if y > 0 && (*grid)[x][y-1] > MAX_AGE {
+				(*grid)[x][y-1] = 0
 			}
-			if x < grid.Width() - 1 && (*grid)[x + 1][y] > MAX_AGE {
-				(*grid)[x + 1][y] = 0
+			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE {
+				(*grid)[x+1][y] = 0
 			}
-			if y < grid.Height() - 1 && (*grid)[x][y + 1] > MAX_AGE {
-				(*grid)[x][y + 1] = 0
+			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE {
+				(*grid)[x][y+1] = 0
 			}
 		}
 	}
@@ -174,29 +174,29 @@ func random(grid *Grid) {
 				continue
 			}
 
-			if x > 0 && (*grid)[x - 1][y] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x - 1][y] = 0
+			if x > 0 && (*grid)[x-1][y] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x-1][y] = 0
 			}
-			if x > 0 && y > 0 && (*grid)[x - 1][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x - 1][y - 1] = 0
+			if x > 0 && y > 0 && (*grid)[x-1][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x-1][y-1] = 0
 			}
-			if y > 0 && (*grid)[x][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x][y - 1] = 0
+			if y > 0 && (*grid)[x][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x][y-1] = 0
 			}
-			if x < grid.Width() - 1 && y > 0 && (*grid)[x + 1][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x + 1][y - 1] = 0
+			if x < grid.Width()-1 && y > 0 && (*grid)[x+1][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x+1][y-1] = 0
 			}
-			if x < grid.Width() - 1 && (*grid)[x + 1][y] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x + 1][y] = 0
+			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x+1][y] = 0
 			}
-			if x < grid.Width() - 1 && y < grid.Height() - 1 && (*grid)[x + 1][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x + 1][y + 1] = 0
+			if x < grid.Width()-1 && y < grid.Height()-1 && (*grid)[x+1][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x+1][y+1] = 0
 			}
-			if y < grid.Height() - 1 && (*grid)[x][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x][y + 1] = 0
+			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x][y+1] = 0
 			}
-			if x > 0 && y < grid.Height() - 1 && (*grid)[x - 1][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
-				(*grid)[x - 1][y + 1] = 0
+			if x > 0 && y < grid.Height()-1 && (*grid)[x-1][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
+				(*grid)[x-1][y+1] = 0
 			}
 		}
 	}
