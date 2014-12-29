@@ -12,7 +12,8 @@ import (
 type Grid [][]int
 
 const (
-	MAX_AGE=10
+	MAX_AGE=20
+	AGE_THRESHOLD=10
 )
 
 func (g Grid) Draw() {
@@ -97,7 +98,7 @@ func main() {
 }
 
 func gameloop(grid *Grid) {
-	c := time.Tick(100 * time.Millisecond)
+	c := time.Tick(50 * time.Millisecond)
 	for _ = range c {
 		random(grid)
 		grid.Age()
@@ -173,28 +174,28 @@ func random(grid *Grid) {
 				continue
 			}
 
-			if x > 0 && (*grid)[x - 1][y] > MAX_AGE && should() {
+			if x > 0 && (*grid)[x - 1][y] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x - 1][y] = 0
 			}
-			if x > 0 && y > 0 && (*grid)[x - 1][y - 1] > MAX_AGE && should() {
+			if x > 0 && y > 0 && (*grid)[x - 1][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x - 1][y - 1] = 0
 			}
-			if y > 0 && (*grid)[x][y - 1] > MAX_AGE && should() {
+			if y > 0 && (*grid)[x][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x][y - 1] = 0
 			}
-			if x < grid.Width() - 1 && y > 0 && (*grid)[x + 1][y - 1] > MAX_AGE && should() {
+			if x < grid.Width() - 1 && y > 0 && (*grid)[x + 1][y - 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x + 1][y - 1] = 0
 			}
-			if x < grid.Width() - 1 && (*grid)[x + 1][y] > MAX_AGE && should() {
+			if x < grid.Width() - 1 && (*grid)[x + 1][y] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x + 1][y] = 0
 			}
-			if x < grid.Width() - 1 && y < grid.Height() - 1 && (*grid)[x + 1][y + 1] > MAX_AGE && should() {
+			if x < grid.Width() - 1 && y < grid.Height() - 1 && (*grid)[x + 1][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x + 1][y + 1] = 0
 			}
-			if y < grid.Height() - 1 && (*grid)[x][y + 1] > MAX_AGE && should() {
+			if y < grid.Height() - 1 && (*grid)[x][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x][y + 1] = 0
 			}
-			if x > 0 && y < grid.Height() - 1 && (*grid)[x - 1][y + 1] > MAX_AGE && should() {
+			if x > 0 && y < grid.Height() - 1 && (*grid)[x - 1][y + 1] > MAX_AGE - AGE_THRESHOLD && should() {
 				(*grid)[x - 1][y + 1] = 0
 			}
 		}
