@@ -40,6 +40,18 @@ func (g *Grid) Age() {
 	}
 }
 
+func (g Grid) Get(x, y int) int {
+	if x < 0 || x >= g.Width() ||
+		y < 0 || y >= g.Height() {
+		return -1
+	}
+	return g[x][y]
+}
+
+func (g *Grid) Set(x, y, age int) {
+	(*g)[x][y] = age
+}
+
 func (g Grid) Width() int {
 	return len(g)
 }
@@ -109,33 +121,19 @@ func gameloop(grid *Grid) {
 func square(grid *Grid) {
 	for x := 0; x < grid.Width(); x++ {
 		for y := 0; y < grid.Height(); y++ {
-			if (*grid)[x][y] != 1 {
+			if grid.Get(x, y) != 1 {
 				continue
 			}
 
-			if x > 0 && (*grid)[x-1][y] > MAX_AGE {
-				(*grid)[x-1][y] = 0
-			}
-			if x > 0 && y > 0 && (*grid)[x-1][y-1] > MAX_AGE {
-				(*grid)[x-1][y-1] = 0
-			}
-			if y > 0 && (*grid)[x][y-1] > MAX_AGE {
-				(*grid)[x][y-1] = 0
-			}
-			if x < grid.Width()-1 && y > 0 && (*grid)[x+1][y-1] > MAX_AGE {
-				(*grid)[x+1][y-1] = 0
-			}
-			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE {
-				(*grid)[x+1][y] = 0
-			}
-			if x < grid.Width()-1 && y < grid.Height()-1 && (*grid)[x+1][y+1] > MAX_AGE {
-				(*grid)[x+1][y+1] = 0
-			}
-			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE {
-				(*grid)[x][y+1] = 0
-			}
-			if x > 0 && y < grid.Height()-1 && (*grid)[x-1][y+1] > MAX_AGE {
-				(*grid)[x-1][y+1] = 0
+			for dx := -1; dx <= 1; dx++ {
+				for dy := -1; dy <= 1; dy++ {
+					if dx == 0 && dy == 0 {
+						continue
+					}
+					if grid.Get(x+dx, y+dy) > MAX_AGE {
+						grid.Set(x+dx, y+dy, 0)
+					}
+				}
 			}
 		}
 	}
@@ -144,21 +142,21 @@ func square(grid *Grid) {
 func diamond(grid *Grid) {
 	for x := 0; x < grid.Width(); x++ {
 		for y := 0; y < grid.Height(); y++ {
-			if (*grid)[x][y] != 1 {
+			if grid.Get(x, y) != 1 {
 				continue
 			}
 
-			if x > 0 && (*grid)[x-1][y] > MAX_AGE {
-				(*grid)[x-1][y] = 0
+			if grid.Get(x-1, y) > MAX_AGE {
+				grid.Set(x-1, y, 0)
 			}
-			if y > 0 && (*grid)[x][y-1] > MAX_AGE {
-				(*grid)[x][y-1] = 0
+			if grid.Get(x, y-1) > MAX_AGE {
+				grid.Set(x, y-1, 0)
 			}
-			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE {
-				(*grid)[x+1][y] = 0
+			if grid.Get(x+1, y) > MAX_AGE {
+				grid.Set(x+1, y, 0)
 			}
-			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE {
-				(*grid)[x][y+1] = 0
+			if grid.Get(x, y+1) > MAX_AGE {
+				grid.Set(x, y+1, 0)
 			}
 		}
 	}
@@ -170,33 +168,19 @@ func random(grid *Grid) {
 	}
 	for x := 0; x < grid.Width(); x++ {
 		for y := 0; y < grid.Height(); y++ {
-			if (*grid)[x][y] != 1 {
+			if grid.Get(x, y) != 1 {
 				continue
 			}
 
-			if x > 0 && (*grid)[x-1][y] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x-1][y] = 0
-			}
-			if x > 0 && y > 0 && (*grid)[x-1][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x-1][y-1] = 0
-			}
-			if y > 0 && (*grid)[x][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x][y-1] = 0
-			}
-			if x < grid.Width()-1 && y > 0 && (*grid)[x+1][y-1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x+1][y-1] = 0
-			}
-			if x < grid.Width()-1 && (*grid)[x+1][y] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x+1][y] = 0
-			}
-			if x < grid.Width()-1 && y < grid.Height()-1 && (*grid)[x+1][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x+1][y+1] = 0
-			}
-			if y < grid.Height()-1 && (*grid)[x][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x][y+1] = 0
-			}
-			if x > 0 && y < grid.Height()-1 && (*grid)[x-1][y+1] > MAX_AGE-AGE_THRESHOLD && should() {
-				(*grid)[x-1][y+1] = 0
+			for dx := -1; dx <= 1; dx++ {
+				for dy := -1; dy <= 1; dy++ {
+					if dx == 0 && dy == 0 {
+						continue
+					}
+					if grid.Get(x+dx, y+dy) > MAX_AGE-AGE_THRESHOLD && should() {
+						grid.Set(x+dx, y+dy, 0)
+					}
+				}
 			}
 		}
 	}
